@@ -1,39 +1,46 @@
 $(document).ready(function () {
-  $("button").on('click', function() {
-    var foodItem = $(this).attr("data-food");
-    var queryUrl = "https://api.giphy.com/v1/gifs/search?api_key=yiS35kD94qAKbsiCeW8EDDgmQJb3JlOA&q=" + foodItem +
-      "&limit=10&offset=0&rating=PG&lang=en";
-    $.ajax({
-        url: queryUrl,
-        method: "GET"
-      }).then(function (response) {
-          
-          var x = response.data;
-          for (i = 0; i < x.length; i++) {
-            var foodRating = $("<p>");
-            foodRating.text("Rated:"  + x[i].rating);
-            var foodContainer = $("<div>");
-            var foodPic = $("<img>");
-            foodPic.attr('src',x[i].images.downsized.url);
-            foodContainer.append(foodRating);
-            foodContainer.append(foodPic);
-            $("#images").prepend(foodContainer);
-          }
-          
-      })
-  })
-   // function addButton(newButton) {
-   //   var newButton = [];
-    //  newButton.attr('data-food');
-    //  var buttonContent = $("#userInput").val().trim();
-   //   newButton.push(buttonContent);
-    //  for (i=0; i < newButton.length; i++) {
-   //  var j = $("<button>");
-   //  j.text(buttonContent);
-   //  newButton.push(j);
-
-      }
-
-        
+  /// array of initial buttons I want to create
+  var buttons = ["Chicken and Waffles", "Pancakes", "Waffles", "Steak", "Oatmeal", "popeye's chicken sandwich",
+    "turkey", "tortilla", "macaroni", "peanut butter", "bbq", "cinnamon roll", "bagel"];
+    // function to try and save local storage you need to JSON parse to turn data into an object
+    function localList(){
+      var localButton = JSON.parse(localStorage.getItem('button'));
+      
+      buttons = localButton;
     }
-})
+
+  // first you need to empty div so it does not repeat buttons then make function to dynamically make my buttons from values of my array
+  $("#images").empty();
+  function makeButton() {
+    for (var i = 0; i < buttons.length; i++) {
+      var buttonName = buttons[i];
+      var buttonDiv = $("<div>");
+      var button = $("<button>");
+      button.text(buttonName);
+      button.attr("data-name", buttonName);
+      $("#images").append(button);
+
+
+    }
+    // this saves my buttons array to local storage you need stringify so it can read it.
+    localStorage.setItem('button', JSON.stringify(buttons));
+  }
+  // calling functions
+  
+  makeButton();
+  localList();
+  function searchGif(event){
+    event.preventDefault();
+    var value = $('#userInput').val().trim();
+    $("#images").empty();
+    buttons.push(value);
+    makeButton();
+
+  }
+  // function to add new buttons that the user enters and you need to empty div again so no repeat buttons
+  $("#searchButton").on('click', searchGif); 
+ 
+
+  })
+
+
