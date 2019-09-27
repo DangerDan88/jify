@@ -10,7 +10,7 @@ $(document).ready(function () {
     buttons = localButton;
   }
 
-
+var x ="";
   // first you need to empty div so it does not repeat buttons then make function to dynamically make my buttons from values of my array
   $("#images").empty();
   function makeButton() {
@@ -21,7 +21,7 @@ $(document).ready(function () {
       button.text(buttonName);
       button.attr("data-name",buttonName);
       $("#images").append(button);
-
+        x = buttonName;
 
     }
     // this saves my buttons array to local storage you need stringify so it can read it.
@@ -37,18 +37,26 @@ $(document).ready(function () {
   $("#searchButton").on('click', function (event) {
     event.preventDefault();
     var value = $('#userInput').val().trim();
+    
     $("#images").empty();
     buttons.push(value);
     makeButton();
+
+     
 
 
 
 
   })
   $("button").on('click', function(){
-    var x = $(this).attr("data-name");
+    console.log(x);
+    console.log($(this).attr("data-name"))
+     if( ($(this).attr("data-name"))!=undefined){
+      x=$(this).attr("data-name")
+     }
+   
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +  x + "&api_key=yiS35kD94qAKbsiCeW8EDDgmQJb3JlOA&limit=12&offset=0&rating=G&lang=en";
-    
+    console.log(queryURL);
     $.ajax({
       url: queryURL,
       method: "GET"
@@ -57,7 +65,7 @@ $(document).ready(function () {
       var results = response.data;
       for (var i = 0; i < results.length; i++) {
       var results = response.data;
-      console.log(results)  ;    
+      console.log(results);    
       var gifDiv = $("<div>");
       var rating = results[0].rating;
       var ratingP = $("<p>").text("Rated:" + rating[0]);
