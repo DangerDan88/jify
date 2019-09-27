@@ -19,7 +19,7 @@ $(document).ready(function () {
       var buttonDiv = $("<div>");
       var button = $("<button>");
       button.text(buttonName);
-      button.attr("data-name", buttonName);
+      button.attr("data-name",buttonName);
       $("#images").append(button);
 
 
@@ -45,5 +45,35 @@ $(document).ready(function () {
 
 
   })
-  
+  $("button").on('click', function(){
+    var x = $(this).attr("data-name");
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +  x + "&api_key=yiS35kD94qAKbsiCeW8EDDgmQJb3JlOA&limit=12&offset=0&rating=G&lang=en";
+    
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+
+    }).then(function(response){
+      var results = response.data;
+      for (var i = 0; i < results.length; i++) {
+      var results = response.data;
+      console.log(results)  ;    
+      var gifDiv = $("<div>");
+      var rating = results[0].rating;
+      var ratingP = $("<p>").text("Rated:" + rating[0]);
+      var gifImage = $("<img>").attr('src',results[i].images.downsized.url);
+      
+      gifDiv.append(ratingP);
+      gifDiv.append(gifImage);
+
+      
+      $("#gif").prepend(gifDiv);
+
+
+
+    }})
+    
+
+  })
+
 })
