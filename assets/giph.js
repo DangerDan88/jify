@@ -14,6 +14,7 @@ var x ="";
   // first you need to empty div so it does not repeat buttons then make function to dynamically make my buttons from values of my array
   $("#images").empty();
   function makeButton() {
+   buttons = ["Chicken and Waffles"];
     for (var i = 0; i < buttons.length; i++) {
       var buttonName = buttons[i];
       var buttonDiv = $("<div>");
